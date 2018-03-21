@@ -1,0 +1,12 @@
+Package: qibble
+Title: Tidy Output for qstat engine 
+Version: 0.0.1
+Authors@R: person("Jonathan", "Sidi", email = "yonis@metrumrg.com", role = c("aut", "cre"))
+Description: Creates tidy output for qstat and has a shinyapp for realtime tracking during a qstat run.
+Depends: R (>= 3.3.3)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: xml2,dplyr,tidyr,purrr,parallel,utils
+Suggests: qapply
+RoxygenNote: 6.0.1
