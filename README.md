@@ -4,7 +4,7 @@ Working in a tidy framework to manage jobs on the [Open Grid Scheduler](http://g
 
 The Open Grid Scheduler/Engine (OGSE) is an open source batch-queuing system, developed and based upon Sun Grid Engine.
 
-This package depends that the OGSE is installed on your system. Tocheck this run from the terminal
+This package depends that the OGSE is installed on your system. To check this run from the terminal
 
 ```
 qconf -sconf
