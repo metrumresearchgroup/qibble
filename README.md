@@ -36,7 +36,21 @@ qibble()
 With `qapply`
 
 ```r
-qibble(workDir,tag)
+workDir <- 'Directory where the worker processes will be spawned'
+tag <- 'A label for the job and temporary files related to the job'
+
+#same as defined in qapply call
+
+d <- qibble(workDir = workDir,tag = tag)
+
+d
 ```
 
+![](miscellaneous/images/console_shot.png)
+
+```r
+plot(d)
+```
+
+![](miscellaneous/images/output.png)
 
