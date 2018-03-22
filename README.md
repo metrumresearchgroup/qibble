@@ -33,6 +33,8 @@ Without `qapply`
 qibble()
 ```
 
+![](miscellaneous/images/no_qapply.png)
+
 With `qapply`
 
 ```r
