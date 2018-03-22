@@ -4,12 +4,14 @@
 \alias{qibble}
 \title{FUNCTION_TITLE}
 \usage{
-qibble(workDir = "qapply", tag = "stanrun")
+qibble(workDir = NULL, tag = NULL, qapply_log_tail = 1)
 }
 \arguments{
-\item{workDir}{PARAM_DESCRIPTION, Default: 'qapply'}
+\item{workDir}{PARAM_DESCRIPTION, Default: NULL}
 
-\item{tag}{PARAM_DESCRIPTION, Default: 'stanrun'}
+\item{tag}{PARAM_DESCRIPTION, Default: NULL}
+
+\item{qapply_log_tail}{PARAM_DESCRIPTION, Default: 1}
 }
 \value{
 OUTPUT_DESCRIPTION

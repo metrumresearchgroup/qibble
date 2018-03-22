@@ -1,7 +1,8 @@
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
-#' @param workDir PARAM_DESCRIPTION, Default: 'qapply'
-#' @param tag PARAM_DESCRIPTION, Default: 'stanrun'
+#' @param workDir PARAM_DESCRIPTION, Default: NULL
+#' @param tag PARAM_DESCRIPTION, Default: NULL
+#' @param qapply_log_tail PARAM_DESCRIPTION, Default: 1
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples 
@@ -15,21 +16,11 @@
 #' @import dplyr
 #' @importFrom tidyr separate
 #' @importFrom xml2 read_xml xml_child xml_find_all xml_double xml_text
-qibble <- function(workDir='qapply',tag='stanrun'){
+qibble <- function(workDir=NULL,tag=NULL,qapply_log_tail = 1){
   
   this_xml <- xml2::read_xml(paste0(system('qstat -f -xml',intern = TRUE),collapse = '\n'))%>%
     xml2::xml_child('queue_info')%>%
     xml2::xml_find_all('Queue-List')
-  
-  data.frame(slots_used  = this_xml%>%
-               xml2::xml_child(search = 'slots_used')%>%
-               xml2::xml_double(),
-             slot_state = this_xml%>%
-               xml2::xml_child(search = 'state')%>%
-               xml2::xml_text())%>%
-    dplyr::filter(is.na(slot_state))%>%
-    dplyr::summarise(s=sum(slots_used))%>%
-    dplyr::pull(s)
   
   d <- data_frame(
     name        = this_xml%>%xml2::xml_child(search = 'name')%>%xml2::xml_text(),
@@ -54,9 +45,11 @@ qibble <- function(workDir='qapply',tag='stanrun'){
   names(d$job_name) <- d$ip  
 
   if('qapply'%in%rownames(installed.packages()))
-     d <- qapply_qibble(d,workDir,tag)
+     d <- qapply_qibble(d,workDir,tag,log_tail = qapply_log_tail)
   
-  class(d) <- c(class(d),'qibble')
+  attr(d,which = 'workDir') <- workDir
+  attr(d,which = 'tag') <- tag
+  attr(d,which = 'class') <- c('qibble',class(d))
   
   return(d)
 }

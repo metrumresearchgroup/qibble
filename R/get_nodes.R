@@ -9,14 +9,12 @@
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @seealso
-#'  \code{\link[xml2]{read_xml}},\code{\link[xml2]{xml_child}},\code{\link[xml2]{xml_find_all}},\code{\link[xml2]{xml_text}},\code{\link[xml2]{xml_double}}
 #' @rdname get_nodes
 #' @export 
 #' @import dplyr
 #' @importFrom xml2 read_xml xml_child xml_find_all xml_text xml_double
 get_nodes <- function(tag){
-  tf <- paste0(qstat('-f -xml'),collapse = '\n')
+  tf <- paste0(system('qstat -f -xml',intern = TRUE),collapse = '\n')
   
   this_xml <- xml2::read_xml(tf)%>%
     xml2::xml_child('queue_info')%>%

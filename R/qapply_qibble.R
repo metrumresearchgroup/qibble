@@ -2,7 +2,7 @@
 #' @importFrom purrr map map_chr
 #' @importFrom parallel mclapply detectCores
 #' @importFrom utils tail
-qapply_qibble <- function(d,workDir,tag){
+qapply_qibble <- function(d,workDir,tag, log_tail = 1){
   
   d <- d%>%
     dplyr::mutate(job_chunks = purrr::map(jobs,.f=function(y){
@@ -28,7 +28,7 @@ qapply_qibble <- function(d,workDir,tag){
   d$job_err <- lapply(d$job_chunks,function(y) unlist(sapply(y,function(x) err_out[grep(sprintf('\\b%s\\b',x),names(err_out))],USE.NAMES = FALSE)))
   d$job_log <- lapply(d$job_chunks,function(y) unlist(sapply(y,function(x) log_out[grep(sprintf('\\b%s\\b',x),names(log_out))],USE.NAMES = FALSE)))
   
-  d$job_log_tail <- purrr::map(d$job_log,function(y) purrr::map_chr(y,.f=function(x) utils::tail(strsplit(x,'\n')[[1]],1)))
+  d$job_log_tail <- purrr::map(d$job_log,function(y) purrr::map(y,.f=function(x) utils::tail(strsplit(x,'\n')[[1]],log_tail)))
   
   outvec <- list.files(file.path(workDir,'out',tag))
   

@@ -25,6 +25,3 @@ if(interactive()){
  }
 }
 }
-\seealso{
-\code{\link[xml2]{read_xml}},\code{\link[xml2]{xml_child}},\code{\link[xml2]{xml_find_all}},\code{\link[xml2]{xml_text}},\code{\link[xml2]{xml_double}}
-}
