@@ -4,14 +4,14 @@
 \alias{qibble_app}
 \title{FUNCTION_TITLE}
 \usage{
-qibble_app(workDir, tag, launch.browser = TRUE)
+qibble_app(workDir, tag, viewer = shiny::paneViewer())
 }
 \arguments{
 \item{workDir}{PARAM_DESCRIPTION}
 
 \item{tag}{PARAM_DESCRIPTION}
 
-\item{launch.browser}{PARAM_DESCRIPTION, Default: TRUE}
+\item{viewer}{PARAM_DESCRIPTION, Default: shiny::paneViewer()}
 }
 \value{
 OUTPUT_DESCRIPTION
