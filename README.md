@@ -43,10 +43,10 @@ tag <- 'A label for the job and temporary files related to the job'
 
 d <- qibble(workDir = workDir,tag = tag)
 
-d
+glimpse(d)
 ```
 
-![](miscellaneous/images/console_shot.png)
+![](miscellaneous/images/glimpse_shot.png)
 
 ```r
 plot(d)
