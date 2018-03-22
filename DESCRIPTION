@@ -1,8 +1,9 @@
 Package: qibble
-Title: Tidy Output for qstat engine 
+Title: Tidy Output for Open Grid Scheduler/Engine 
 Version: 0.0.2
 Authors@R: person("Jonathan", "Sidi", email = "yonis@metrumrg.com", role = c("aut", "cre"))
-Description: Creates tidy output for qstat and has a shinyapp for realtime tracking during a qstat run.
+Description: Manage Open Grid Scheduler/Engine jobs in a tidy framework and  contains a 
+             Shiny gadget for realtime tracking during a qsub run.
 Depends: R (>= 3.3.3)
 License: MIT + file LICENSE
 Encoding: UTF-8
