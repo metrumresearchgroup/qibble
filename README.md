@@ -20,6 +20,7 @@ It is suggested that the R package [qapply](https://bitbucket.org/metrumrg/qappl
 ## Installation
 
 ```r
+remotes::install_bitbucket('metrumrg/qapply/working/qapply@xml2')
 remotes::install_github('metrumresearchgroup/qibble')
 ```
 
