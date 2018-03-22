@@ -54,3 +54,8 @@ plot(d)
 
 ![](miscellaneous/images/output.png)
 
+```r
+current_jobs(d)
+```
+
+![](miscellaneous/images/current_jobs.png)
