@@ -4,51 +4,66 @@
 #' @importFrom tidyr gather unnest
 #' @importFrom ggridges geom_density_ridges
 #' @import patchwork
+#' @importFrom tibble as_tibble
 #' @export
-plot.qibble <- function(object){
+plot.qibble <- function(x,...){
   
-  object <- dplyr::as.tbl(object)
+  x <- tibble::as_tibble(x)
   
-  ub <- (-1*eval(parse(text=object$job_chunks[[1]][1])))
+  ub <- (-1*eval(parse(text=x$job_chunks[[1]][1])))
   
-  active <- get_nodes(tag = attr(object,'tag'))
+  active <- get_nodes(tag = attr(x,'tag'))
   
-  done   <- length(get_complete(workDir = attr(object,'workDir'),tag=attr(object,'tag')))
+  done   <- length(get_complete(workDir = attr(x,'workDir'),tag=attr(x,'tag')))
   
   total  <- active + done
   
-  count_nodes <- object%>%
+  count_nodes <- x%>%
     dplyr::filter(slot_state=='run')%>%
-    purrr:::pluck('chunk_complete')%>%
+    purrr::pluck('chunk_complete')%>%
     purrr::map_df(.f=function(x) data.frame(x)%>%
                     dplyr::mutate(chunk=rownames(.)),.id='ip')%>%
     dplyr::count(x)
   
-  chunk_length <- -1*eval(parse(text=object$job_chunks[[1]][1])) + 1
+  chunk_length <- -1*eval(parse(text=x$job_chunks[[1]][1])) + 1
   
-  nodes_in_use <- object%>%dplyr::filter(slot_state=='run')%>%nrow()
+  nodes_in_use <- x%>%dplyr::filter(slot_state=='run')%>%nrow()
   
-  p1 <- object%>%
-    dplyr::filter(slot_state=='run')%>%
+  p1 <- x%>%
+    dplyr::filter(slot_state=='run'&sapply(chunk_time_mean,length)>0)%>%
     ggplot2::ggplot(ggplot2::aes(x=ip,y=slots_used,fill=ip)) + 
     ggplot2::geom_bar(stat='identity',position='dodge',show.legend = FALSE) + 
-    ggplot2::theme(axis.text.x = ggplot2::element_blank()) +
-    ggplot2::labs(y='Slots in Use',x='IP')
+    ggplot2::labs(y='Slots in Use',x='IP') +
+    ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                   panel.grid.minor = ggplot2::element_blank(),
+                   panel.grid.major.x = ggplot2::element_blank())
   
-  p2 <- purrr::map(object$chunk_complete[object$slot_state=='run'],
-                   .f=function(x){
-                     data.frame(complete=x)%>%
-                       dplyr::mutate(chunk=rownames(.)) 
-                   })%>%
+  p2_data <- purrr::map(x$chunk_complete[x$slot_state=='run'],
+                        .f=function(x){
+                          data.frame(complete=x)%>%
+                            dplyr::mutate(chunk=rownames(.)) 
+                        })%>%
     dplyr::bind_rows(.,.id='ip')%>%
     dplyr::mutate(complete=complete+1)%>%
-    dplyr::count(ip,complete)%>%
+    dplyr::count(ip,complete)
+  
+  max_y <- p2_data%>%
+    dplyr::group_by(complete)%>%
+    dplyr::summarise(nn=sum(n))%>%
+    dplyr::ungroup()%>%
+    dplyr::filter(nn==max(nn))%>%
+    dplyr::pull(nn)
+  
+  p2 <- p2_data%>%
     ggplot2::ggplot(ggplot2::aes(x=complete,y=n,fill=ip)) + 
     ggplot2::geom_bar(stat='identity',show.legend = FALSE) +
     ggplot2::labs(y='Frequency',x='Jobs Complete') + 
-    ggplot2::scale_x_continuous(limits=c(0,(chunk_length + 1)),breaks=1:chunk_length)
+    #ggplot2::scale_y_continuous(breaks=0:max_y) +
+    ggplot2::scale_x_continuous(limits=c(0,(chunk_length + 1)),breaks=1:chunk_length) +
+    ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
+                   panel.grid.major.x = ggplot2::element_blank())
   
-  p3 <- object%>%
+  p3 <- x%>%
     dplyr::filter(slot_state=='run')%>%
     dplyr::select(ip,chunk_time)%>%
     tidyr::unnest()%>%

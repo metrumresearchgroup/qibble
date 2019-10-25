@@ -9,6 +9,7 @@
 #' @export 
 #' @import shiny
 #' @import shinydashboard
+#' @importFrom graphics plot
 qibble_app <- function(workDir,tag, viewer = shiny::paneViewer()){
   
   ### UI ----
@@ -60,7 +61,7 @@ qibble_app <- function(workDir,tag, viewer = shiny::paneViewer()){
     shiny::observeEvent(trackerData()(),{
       
       output$plot <- shiny::renderPlot({
-        plot(trackerData()())
+        graphics::plot(trackerData()())
       })
     
       output$jobs_tbl <- shiny::renderDataTable({

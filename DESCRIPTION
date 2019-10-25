@@ -4,11 +4,11 @@ Version: 0.0.2
 Authors@R: person("Jonathan", "Sidi", email = "yonis@metrumrg.com", role = c("aut", "cre"))
 Description: Manage Open Grid Scheduler/Engine jobs in a tidy framework and  contains a 
              Shiny gadget for realtime tracking during a qsub run.
-Depends: R (>= 3.3.3)
+Depends: R (>= 3.5.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: xml2,dplyr,tidyr,purrr,parallel,utils,ggridges,magrittr,shiny,shinydashboard
+Imports: xml2,dplyr,tidyr,purrr,parallel,utils,ggridges,magrittr,shiny,shinydashboard, tibble, ggplot2, patchwork
 Suggests: qapply
-Remotes: thomasp85/patchwork, tidyverse/ggplot2
-RoxygenNote: 6.0.1
+Remotes: thomasp85/patchwork
+RoxygenNote: 6.1.1

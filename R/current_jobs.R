@@ -18,6 +18,7 @@ current_jobs <- function(d){
       d%>%
         dplyr::filter(slot_state=='run')%>%
         dplyr::select(ip,jobs_complete=chunk_complete)%>%
+        dplyr::filter(sapply(jobs_complete,length)>0)%>%
         tidyr::unnest()%>%
         dplyr::group_by(ip)%>%
         dplyr::mutate(chunk_idx=1:n()), by = c("ip", "chunk_idx")
@@ -40,5 +41,6 @@ current_jobs <- function(d){
         dplyr::rename(chunk_name=chunk), by = c("ip", "chunk_name")
     )%>%
     dplyr::select(-chunk_idx)%>%
-    dplyr::ungroup()
+    dplyr::ungroup()%>%
+    dplyr::filter(!is.na(jobs_complete))
 }

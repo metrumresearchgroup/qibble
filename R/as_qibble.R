@@ -1,8 +1,13 @@
+#' @title qibble class
+#' @description qibble class functions
+#' @param x object to convert/check
+#' @rdname qibble_class
 #' @export
 is.qibble <- function(x){
   inherits(x, 'qibble') 
 }
 
+#' @rdname qibble_class
 #' @export
 as.qibble <- function(x) {
   UseMethod('as.qibble')
@@ -19,10 +24,10 @@ as.qibble.tbl <- function(x) {
   x
 }
 
-#' @importFrom dplyr as.tbl
 #' @export
-print.qibble <- function(object){
-  print(dplyr::as.tbl(object))
+print.qibble <- function(x,...){
+  class(x) <- class(x)[-1]
+  print(x)
 }
 
 #' @inherit magrittr::`%>%`
